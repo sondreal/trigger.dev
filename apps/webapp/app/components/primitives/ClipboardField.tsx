@@ -14,6 +14,7 @@ const variations = {
     button: "rounded-l-none min-w-[3.1rem]",
     iconSize: "h-3 w-3",
     iconPadding: "pl-1",
+    buttonMultiRow: "rounded-l-none border-l border-slate-750 min-w-[3.1rem] h-6",
   },
   "secondary/small": {
     container:
@@ -24,6 +25,7 @@ const variations = {
     button: "rounded-l-none border-l border-slate-750 min-w-[3.1rem]",
     iconSize: "h-3 w-3",
     iconPadding: "pl-1",
+    buttonMultiRow: "rounded-l-none border-l border-slate-750 min-w-[3.1rem] h-6",
   },
   "tertiary/small": {
     container:
@@ -34,6 +36,7 @@ const variations = {
     button: "rounded-l-none border-l border-slate-850 min-w-[3.1rem]",
     iconSize: "h-3 w-3",
     iconPadding: "pl-1",
+    buttonMultiRow: "rounded-l-none border-l border-slate-750 min-w-[3.1rem] h-6",
   },
   "primary/medium": {
     container:
@@ -44,6 +47,7 @@ const variations = {
     button: "rounded-l-none min-w-[4rem]",
     iconSize: "h-4 w-4",
     iconPadding: "pl-2",
+    buttonMultiRow: "rounded-l-none min-w-[4rem] h-16",
   },
   "secondary/medium": {
     container:
@@ -54,6 +58,7 @@ const variations = {
     button: "rounded-l-none border-l border-slate-750 min-w-[4rem]",
     iconSize: "h-4 w-4",
     iconPadding: "pl-2",
+    buttonMultiRow: "rounded-l-none border-l border-slate-750 min-w-[3.1rem] h-6",
   },
   "tertiary/medium": {
     container:
@@ -64,6 +69,7 @@ const variations = {
     button: "rounded-l-none border-l border-slate-850 min-w-[4rem]",
     iconSize: "h-4 w-4",
     iconPadding: "pl-2",
+    buttonMultiRow: "rounded-l-none border-l border-slate-750 min-w-[3.1rem] h-6",
   },
 };
 
@@ -74,6 +80,7 @@ type ClipboardFieldProps = {
   className?: string;
   icon?: IconNames | React.ReactNode;
   fullWidth?: boolean;
+  numberOfRows?: number;
 };
 
 export function ClipboardField({
@@ -83,6 +90,7 @@ export function ClipboardField({
   className,
   icon,
   fullWidth = true,
+  numberOfRows = 1,
 }: ClipboardFieldProps) {
   const [isSecure, setIsSecure] = useState(secure !== undefined && secure);
   const [copied, setCopied] = useState(false);
@@ -101,6 +109,7 @@ export function ClipboardField({
   );
 
   const { container, input, buttonVariant, button } = variations[variant];
+  const buttonMultiRow = variations[variant].buttonMultiRow;
   const iconClassName = variations[variant].iconSize;
   const iconPosition = variations[variant].iconPadding;
   const inputIcon = useRef<HTMLInputElement>(null);
@@ -115,26 +124,54 @@ export function ClipboardField({
           {typeof icon === "string" ? <NamedIcon name={icon} className={iconClassName} /> : icon}
         </span>
       )}
-      <input
-        type="text"
-        ref={inputIcon}
-        value={isSecure ? (typeof secure === "string" ? secure : "•".repeat(value.length)) : value}
-        readOnly={true}
-        className={cn("shrink grow select-all overflow-x-auto", input)}
-        size={value.length}
-        onFocus={(e) => {
-          if (secure) {
-            setIsSecure((i) => false);
+      {numberOfRows >= 2 ? (
+        <textarea
+          value={
+            isSecure ? (typeof secure === "string" ? secure : "•".repeat(value.length)) : value
           }
-          e.currentTarget.select();
-        }}
-        onBlur={() => {
-          if (secure) {
-            setIsSecure((i) => true);
+          rows={numberOfRows}
+          readOnly={true}
+          className={cn("!h-auto shrink grow select-all overflow-x-auto", input)}
+          onFocus={(e) => {
+            if (secure) {
+              setIsSecure((i) => false);
+            }
+            e.currentTarget.select();
+          }}
+          onBlur={() => {
+            if (secure) {
+              setIsSecure((i) => true);
+            }
+          }}
+        />
+      ) : (
+        <input
+          type="text"
+          ref={inputIcon}
+          value={
+            isSecure ? (typeof secure === "string" ? secure : "•".repeat(value.length)) : value
           }
-        }}
-      />
-      <Button variant={buttonVariant} onClick={copy} className={cn("shrink-0 grow-0", button)}>
+          readOnly={true}
+          className={cn("shrink grow select-all overflow-x-auto", input)}
+          size={value.length}
+          onFocus={(e) => {
+            if (secure) {
+              setIsSecure((i) => false);
+            }
+            e.currentTarget.select();
+          }}
+          onBlur={() => {
+            if (secure) {
+              setIsSecure((i) => true);
+            }
+          }}
+        />
+      )}
+      <Button
+        variant={buttonVariant}
+        onClick={copy}
+        className={cn("shrink-0 grow-0", numberOfRows === 1 ? button : buttonMultiRow)}
+      >
         {copied ? <CheckIcon className="h-4 w-4 text-green-500" /> : "Copy"}
       </Button>
     </span>

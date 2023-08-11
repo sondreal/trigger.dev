@@ -169,21 +169,27 @@ export function HowToSetupYourProject() {
                       <ClipboardField
                         variant="primary/medium"
                         className="mb-4"
-                        value={`npx create-next-app@latest`}
+                        value={`npx create-next-app@latest my-new-next-app
+cd my-new-next-app`}
+                        numberOfRows={2}
                       />
                     </ClientTabsContent>
                     <ClientTabsContent value={"pnpm"}>
                       <ClipboardField
                         variant="primary/medium"
                         className="mb-4"
-                        value={`pnpm create next-app`}
+                        value={`pnpm create next-app my-new-next-app
+cd my-new-next-app`}
+                        numberOfRows={2}
                       />
                     </ClientTabsContent>
                     <ClientTabsContent value={"yarn"}>
                       <ClipboardField
                         variant="primary/medium"
                         className="mb-4"
-                        value={`yarn create next-app`}
+                        value={`yarn create next-app my-new-next-app
+cd my-new-next-app`}
+                        numberOfRows={2}
                       />
                     </ClientTabsContent>
                   </ClientTabs>
@@ -192,19 +198,8 @@ export function HowToSetupYourProject() {
                     Trigger.dev works with either the Pages or App Router configuration.
                   </Paragraph>
                 </StepContentContainer>
-                <StepNumber stepNumber="2" title="Navigate to your new Next.js project" />
-                <StepContentContainer>
-                  <Paragraph spacing>
-                    You have now created a new Next.js project. Let’s <InlineCode>cd</InlineCode>{" "}
-                    into it using the project name you just provided:
-                  </Paragraph>
-                  <ClipboardField
-                    value={"cd [replace with your project name]"}
-                    variant={"primary/medium"}
-                  ></ClipboardField>
-                </StepContentContainer>
                 <StepNumber
-                  stepNumber="3"
+                  stepNumber="2"
                   title="Run the CLI 'init' command in your new Next.js project"
                 />
                 <StepContentContainer>
@@ -215,15 +210,15 @@ export function HowToSetupYourProject() {
                     to help you get started.
                   </Paragraph>
                 </StepContentContainer>
-                <StepNumber stepNumber="4" title="Run your Next.js app" />
+                <StepNumber stepNumber="3" title="Run your Next.js app" />
                 <StepContentContainer>
                   <NextDevCommand />
                 </StepContentContainer>
-                <StepNumber stepNumber="5" title="Run the CLI 'dev' command" />
+                <StepNumber stepNumber="4" title="Run the CLI 'dev' command" />
                 <StepContentContainer>
                   <TriggerDevStep />
                 </StepContentContainer>
-                <StepNumber stepNumber="6" title="Wait for Jobs" displaySpinner />
+                <StepNumber stepNumber="5" title="Wait for Jobs" displaySpinner />
                 <StepContentContainer>
                   <Paragraph>This page will automatically refresh.</Paragraph>
                 </StepContentContainer>
